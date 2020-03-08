@@ -3,7 +3,13 @@ module Main where
 --import Prelude -- core functions
 import Control.Apply ((*>))
 import Control.Bind (discard, (>>=))
+import Data.Either (Either(..))
+import Data.Eq ((==), class Eq)
+import Data.Function (flip)
+import Data.Maybe (Maybe(..))
+import Data.Ord ((<), class Ord)
 import Data.Semigroup ((<>))
+import Data.Semiring ((+), (*))
 import Data.Show (class Show, show)
 import Data.Unit (Unit)
 import Effect (Effect)
@@ -80,8 +86,38 @@ mainWithApplySecond =
   log (showPersonaLikeRecord { name: "Bombo", age: 6 , super: "Super"})
 
 
+--poly :: (forall a. a -> a) -> Boolean
+--poly f = (f 0 < 1) == f true
+
+poly :: (forall a. Ord a => Eq a => a -> a) -> Boolean
+poly f = (f 0 < 1) == (f 0.2 < 1.0)
+
+buco = (_ + 2)
+
+foo x y = x * y + y
+fooBy2 = (_ `foo` 2)
+fooBy2' = (flip foo) 2
+
+f :: Maybe Boolean -> Either Boolean Boolean -> String
+f a b = case a, b of
+  Just true, Left _ -> "Just is true"
+  Just true, Right true -> "Both true"
+  Nothing, Right true -> "Right is true"
+  _, _ -> "Both are false"
+
+-- f (Just true) (Right true)
+
+g :: Maybe Boolean -> Either Boolean Boolean -> String
+g (Just true) (Right true)  = "Both true"
+g (Just true) (Left _)      = "Just is true"
+g Nothing     (Right true)  = "Right is true"
+g _           _             = "Both are false"
+
 main :: Effect Unit
 main = do
   mainWithApplicativeDo
   mainWithBind
   mainWithApplySecond
+  log ("fooBy2: " <> show (fooBy2 10))
+  log ("fooBy2': " <> show (fooBy2' 10))
+  log (g (Just true) (Right true))
