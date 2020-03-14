@@ -28,3 +28,15 @@ To keep **building** the application when a file is saved, use the following com
 - `spago build --watch --clear-screen`
 
 To check the other options available when using `spago`, check its [documentation](https://github.com/purescript/spago#build-and-run-my-project)
+
+## Docker and VSCode Purescript Environment Setup
+
+A docker container with Spago and Purescript is available on docker hub public repository at *gior/purescriptwithspago*. thanks to Giorgia Rondinini
+
+To run the container:
+- `docker run -ti gior/purescriptwithspago bash`
+
+To interface VSCode with the running container, install "Remote Development" extension, available at https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack
+
+This environment works on Windows and Mac (with Docker Desktop), and Linux
+
