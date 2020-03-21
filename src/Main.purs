@@ -1,16 +1,26 @@
-module Main where
+{-  -}module Main where
 
--- import Prelude -- core functions
-import Control.Applicative (pure)
+--import Prelude -- core functions
+
 import Control.Apply ((*>))
+import Control.Applicative (pure)
 import Control.Bind (bind, discard, (>>=))
+import Data.Boolean (otherwise)
+import Data.Either (Either(..))
+import Data.Eq ((==), class Eq)
+import Data.Function (flip, ($))
+import Data.Maybe (Maybe(..))
+import Data.Ord ((<), (>), class Ord)
+import Data.Ring ((-))
 import Data.Semigroup ((<>))
+import Data.Semiring ((+), (*))
 import Data.Show (class Show, show)
 import Data.Unit (Unit)
+import Data.Functor (map)
 import Effect (Effect)
 import Effect.Console (log)
-import Data.Semiring ((+), (*))
-import Data.Maybe (Maybe (..))
+import Data.Array as Array
+import Data.String.CodeUnits as String
 
 -------------------------------
 
@@ -61,7 +71,6 @@ showPersonADT :: PersonADT -> String
 showPersonADT (Person r) = r.name <> " IS " <> show r.age <> " YEARS OLD"
 
 -------------------------------
-
 mainWithApplicativeDo :: Effect Unit
 mainWithApplicativeDo = do
   log ("- applicative 'do'")
@@ -83,50 +92,133 @@ mainWithApplySecond =
   log (showPersonADT newPersonADT) *>
   log (showPersonaLikeRecord { name: "Bombo", age: 6 , super: "Super"})
 
--------------------------------
 
-foo :: Int -> Int -> Int
+--poly :: (forall a. a -> a) -> Boolean
+--poly f = (f 0 < 1) == f true
+
+poly :: (forall a. Ord a => Eq a => a -> a) -> Boolean
+poly f = (f 0 < 1) == (f 0.2 < 1.0)
+
+buco :: Int -> Int
+buco = (_ + 2)
+
 foo x y = x * y + y
-test :: Int
-test = 10 `foo` 20
-test1 :: Int
-test1 = foo 10 20
-fooBy2 :: Int -> Int
 fooBy2 = (_ `foo` 2)
+fooBy2' = (flip foo) 2
 
--------------------------------
+f :: Maybe Boolean -> Either Boolean Int -> String
+f a b = case a, b of
+  Just true,  Left _     -> "Just is true"
+  Just false, Left _     -> "Just is true"
+  Nothing,    Left _     -> "Just is true"
+--Just true,  Right 0    -> "Both true (0)"
+  Just true,  Right x    | x == 0 -> "Both true (0)"
+                         | x > 0  -> "Both true (> 0)"
+                         | otherwise  -> "Both true (< 0)"
+  Just false, Right _    -> "Just false"
+  Nothing,    Right 0    -> "Right is true (1)"
+  Nothing,    Right _    -> "Right is true (_)"
+--  _,         _          -> "Else …"
 
-f :: Int -> String
-f = 
-  case _ of
-    0 -> "None"
-    1 -> "One"
-    _ -> "Some"
+bar = if true then 1 else 0
+-- f (Just true) (Right true)
 
--------------------------------
+g :: Maybe Boolean -> Either Boolean Boolean -> String
+g (Just true) (Right true)  = "Both true"
+g (Just true) (Left _)      = "Just is true"
+g Nothing     (Right true)  = "Right is true"
+g _           _             = "Both are false"
+
+factorial :: Int -> Int
+factorial =
+  let
+    go :: Int -> Int -> Int
+    go acc 1 = acc
+    go acc n = go (acc * n) (n - 1)
+  in
+    go 1
+
+factorial' :: Int -> Int
+factorial' = go 1
+  where
+    go :: Int -> Int -> Int
+    go acc 1 = acc
+    go acc n = go (acc * n) (n - 1)
+
+
+-- bar_1 = factorial 10
+-- bar_2 = go 1 1
 
 maybeSum :: Maybe Number -> Maybe Number -> Maybe Number
 maybeSum a b = do
   n <- a
   m <- b
-  let result = n + m
+  let result = n + m 
   pure result
 
-------------------------------- 
+maybeSum' :: Maybe Number -> Maybe Number -> Maybe Number
+maybeSum' a b =
+  bind a \n ->
+    bind b \m ->
+      let result = n + m
+      in pure result
 
-mainTest :: Effect Unit
-mainTest = do
-  log (show test)
-  log (show test1)
-  log (show (fooBy2 50))
-  log (f 1)
-  log (show (maybeSum (Just 5.0) (Just 5.0)))
 
--------------------------------
+-- show' xs = "[" <> joinWith ", " (map show xs) <> "]"
+-- show'' xs = "[" <> arrayAsList <> "]"
+--   where
+--     arrayAsList = joinWith ", " (map show xs)
+
+-- ============================================
+--  Instance Chains
+--  https://liamgoodacre.github.io/purescript/instance/chain/2017/08/18/purescript-instance-chain.html
+
+class MyShow a where
+  myShow :: a -> String
+
+data MysteryItem = MysteryItem
+
+instance showString :: MyShow String where
+  myShow s = s
+else instance showBoolean :: MyShow Boolean where
+  myShow true = "true"
+  myShow false = "false"
+else instance showA :: MyShow a where
+   myShow _ = "Invalid"
+
+-- else instance customMyShow :: MyShow MysteryItem where
+--   myShow MysteryItem = "Mystery Item"
+
+f' :: forall a. MyShow a => a -> String
+f' x = myShow x
+
+f'' :: MysteryItem -> String
+f'' x = myShow x
+
+-- ===================================================
+--  https://leanpub.com/purescript/read#leanpub-auto-multi-parameter-type-classes
+--  Multi-Parameter Type Classes => PureScript by Example, page 72 (?)
+--  Functional Dependencies ?
+
+class Stream stream element | stream -> element where
+  uncons :: stream -> Maybe { head :: element, tail :: stream }
+
+genericTail :: forall stream element. Stream stream element => stream -> Maybe stream
+genericTail xs = map (\a -> a.tail) (uncons xs)
+genericTail' xs = map _.tail (uncons xs)
 
 main :: Effect Unit
 main = do
-  mainWithApplicativeDo
-  mainWithBind
-  mainWithApplySecond
-  mainTest
+  -- mainWithApplicativeDo
+  -- mainWithBind
+  -- mainWithApplySecond
+  -- log ("fooBy2: " <> show (fooBy2 10))
+  -- log ("fooBy2': " <> show (fooBy2' 10))
+  -- log (g (Just true) (Right true))
+  -- log (show (maybeSum (Just 1.0) (Just 3.0)))
+  -- log (show (maybeSum (Nothing) (Just 3.0)))
+  log $ f' "ciao" -- hello
+  log $ f' true -- true
+  log $ f' MysteryItem
+  log $ f'' MysteryItem -- Invalid
+

@@ -2,8 +2,12 @@
 Welcome to a Spago project!
 You can edit this file as you like.
 -}
-{ name = "my-project"
-, dependencies = [ "console", "effect", "maybe", "psci-support" ]
-, packages = ./packages.dhall
-, sources = [ "src/**/*.purs", "test/**/*.purs" ]
+{ name =
+    "my-project"
+, dependencies =
+    [ "effect", "console", "psci-support", "maybe", "either", "arrays", "strings" ]
+, packages =
+    ./packages.dhall
+, sources =
+    [ "src/**/*.purs", "test/**/*.purs" ]
 }
