@@ -207,6 +207,13 @@ genericTail :: forall stream element. Stream stream element => stream -> Maybe s
 genericTail xs = map (\a -> a.tail) (uncons xs)
 genericTail' xs = map _.tail (uncons xs)
 
+factors :: Int -> Array (Tuple Int Int)
+factors n = do
+  a <- 1 .. n
+  b <- 1 .. a
+  guard $ a * b == n
+  pure $ Tuple a b
+
 main :: Effect Unit
 main = do
   -- mainWithApplicativeDo
