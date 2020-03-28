@@ -1,0 +1,11 @@
+{
+    "name": "Purescript first steps",
+    "dockerFile": "Dockerfile",
+    "forwardPorts": [5000],
+    "extensions": [
+		"nwolverson.language-purescript",
+		"nwolverson.ide-purescript",
+		"ms-vsliveshare.vsliveshare-pack",
+		"ms-vsliveshare.vsliveshare"
+	]
+  }
