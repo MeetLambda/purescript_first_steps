@@ -1,10 +1,12 @@
-{-  -}module Main where
+module Main where
 
 --import Prelude -- core functions
 
 import Control.Apply ((*>))
 import Control.Applicative (pure)
 import Control.Bind (bind, discard, (>>=))
+import Control.MonadZero (guard)
+import Data.Array ((..))
 import Data.Boolean (otherwise)
 import Data.Either (Either(..))
 import Data.Eq ((==), class Eq)
@@ -15,6 +17,7 @@ import Data.Ring ((-))
 import Data.Semigroup ((<>))
 import Data.Semiring ((+), (*))
 import Data.Show (class Show, show)
+import Data.Tuple (Tuple, Tuple(..))
 import Data.Unit (Unit)
 import Data.Functor (map)
 import Effect (Effect)
@@ -120,6 +123,7 @@ f a b = case a, b of
   Nothing,    Right _    -> "Right is true (_)"
 --  _,         _          -> "Else …"
 
+bar :: Int
 bar = if true then 1 else 0
 -- f (Just true) (Right true)
 
@@ -213,7 +217,7 @@ factors n = do
   b <- 1 .. a
   guard $ a * b == n
   pure $ Tuple a b
-
+ 
 main :: Effect Unit
 main = do
   -- mainWithApplicativeDo
