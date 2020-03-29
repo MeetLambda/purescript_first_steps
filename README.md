@@ -33,10 +33,15 @@ To check the other options available when using `spago`, check its [documentatio
 
 A docker container with Spago and Purescript is available on docker hub public repository at *gior/purescriptwithspago*. thanks to Giorgia Rondinini
 
-To run the container:
+To interface VSCode with the container, install "Remote Development" extension, available at https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack
+
+There are two ways to use this container for developement :
+
+1. Let VSCode build the container for you when you open the purescript_first_steps folder from the IDE.
+
+2. Download the container from docker hub, run it and attach to running container from VSCode:
 - `docker run -ti gior/purescriptwithspago bash`
 
-To interface VSCode with the running container, install "Remote Development" extension, available at https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack
 
 This environment works on Windows and Mac (with Docker Desktop), and Linux
 
