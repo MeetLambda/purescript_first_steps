@@ -45,3 +45,15 @@ There are two ways to use this container for developement :
 
 This environment works on Windows and Mac (with Docker Desktop), and Linux
 
+## Resources
+
+Links to resources referenced during MeetLambda meetings
+
+Basic language reference : https://github.com/purescript/documentation/tree/master/language
+
+Extensive language documentation : https://pursuit.purescript.org/
+
+Book used to translate examples from Haskell to Purescript : https://leanpub.com/finding-success-in-haskell
+
+Standard type classes in Haskell, referenced for analogy with Purescript : https://wiki.haskell.org/wikiupload/e/e9/Typeclassopedia.pdf
+
