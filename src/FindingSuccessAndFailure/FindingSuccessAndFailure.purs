@@ -120,6 +120,12 @@ requireAlphaNum' word =
     true -> Right word
     false -> Left "Non alphanum char present"
 
+requireAlphaNum'' :: String -> Either (Array String) String
+requireAlphaNum'' word =
+  case (isAllChar Data.Char.Unicode.isAlphaNum word) of
+    true -> Right word
+    false -> Left ([ "Non alphanum char present" ] )
+
 cleanWhitespace :: String -> Maybe String 
 cleanWhitespace word = 
   let tw = Data.String.Common.trim word
@@ -154,7 +160,7 @@ data User = UserConstructor Username Password
 instance showUser :: Show User where
   show (UserConstructor u p) = "Username: " <> show u <> ", Password: " <> show p
 
-makeUser :: Username -> Password -> Either Error User
+makeUser :: Username -> Password -> Either Error User 
 makeUser u p = ado
     username <- requireAlphaNum' u  
     password <- validatePassword' p

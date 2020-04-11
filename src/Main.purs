@@ -34,6 +34,7 @@ import Data.Array as Array
 import Data.String.CodeUnits as String
 
 import FindingSuccessAndFailure
+import Validation as Validation
 
 -------------------------------
 
@@ -71,7 +72,7 @@ newPersonADT :: PersonADT
 newPersonADT = Person { name: "Mario", age: 4 }
 
 -- variable of type Persona
-newPerson :: Person
+newPerson :: Person 
 newPerson = { name: "Luigi", age: 4 }
 
 -- function that takes any record that has the fields "name", "age" (and possibly more) and returns a String
@@ -253,10 +254,17 @@ main = do
   -- log $ show $ validatePassword' "arrivederci1234"
   -- log $ show $ validatePassword' "@rrivederci1234"
   -- log $ show $ validatePassword' "1234"
-  log $ show $ makeUser "pippo" "arrivederci1234"
-  log $ show $ makeUser' "pippo1" "arrivederci1234"
-  log $ show $ makeUser' "pippo" ""
-  log $ show $ makeUser'' "password123" "username"
+  -- log $ show $ makeUser "pippo" "arrivederci1234"
+  -- log $ show $ makeUser' "pippo1" "arrivederci1234"
+  -- log $ show $ makeUser' "pippo" ""
+  -- log $ show $ makeUser'' "password123" "username"
+
+  log $ show $ Validation.makeUser "pippo" ""
+  log $ show $ Validation.makeUser "username" "password123"
+  log $ show $ Validation.makeUser "short pass no alpha" "1234567 "
+  log $ show $ Validation.makeUser "short pass no alpha" "1234567adfasdfs "
+  log $ show $ Validation.makeUser "short pass" "a234567 "
+
   -- log $ show (requireAlphaNum "ciao54321")
   -- log $ show (requireAlphaNum "ciao. ciao.")
   -- log $ show (requireAlphaNum "letsspeak")

@@ -15,6 +15,7 @@ You can edit this file as you like.
   , "stringutils"
   , "tuples"
   , "unicode"
+  , "validation"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
