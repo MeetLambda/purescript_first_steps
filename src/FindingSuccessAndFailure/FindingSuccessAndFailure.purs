@@ -131,6 +131,8 @@ cleanWhitespace word =
   let tw = Data.String.Common.trim word
    in if (null tw) then Nothing else Just tw
 
+
+-- verifica se la stringa contiene almeno un carattere che non sia spazio
 cleanWhitespace' :: String -> Either Error String
 cleanWhitespace' word = 
   let tw = Data.String.Common.trim word

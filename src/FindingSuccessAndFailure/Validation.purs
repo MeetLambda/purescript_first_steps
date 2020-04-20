@@ -112,6 +112,16 @@ validatePassword' password = -- V (Left ["errore"])
        (\pass -> requireAlphaNum pass *> checkPasswordLength pass) 
        (cleanWhitespace password)
 
+
+validatePassword'' :: String -> V Errors FSAF.Password
+validatePassword'' password = -- V (Left ["errore"])
+   cleanWhitespace password
+   *> requireAlphaNum password
+   *> checkPasswordLength  password 
+       
+       
+
+
 -- bindV 
    
 -- (>>=) :: m a -> (a ->  m b) -> m b
@@ -123,5 +133,6 @@ validateUsername u = requireAlphaNum u
 
 makeUser :: FSAF.Username -> FSAF.Password -> V Errors FSAF.User
 makeUser u p = FSAF.UserConstructor <$> validateUsername u
-                                    <*> validatePassword' p
+                                    <*> validatePassword'' p
+
 

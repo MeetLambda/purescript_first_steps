@@ -2,38 +2,38 @@ module Main where
 
 --import Prelude -- core functions
 
-import Control.Apply ((*>))
+import FindingSuccessAndFailure
+
+import Coercible (isAlphaChar)
 import Control.Applicative (pure)
+import Control.Apply ((*>))
 import Control.Bind (bind, discard, (>>=))
 import Control.MonadZero (guard)
 import Control.Semigroupoid ((<<<))
-import Data.Array as Data.Array
 import Data.Array ((..))
+import Data.Array as Array
+import Data.Array as Data.Array
 import Data.Boolean (otherwise)
 import Data.Char.Unicode as Data.Char.Unicode
 import Data.Either (Either(..))
 import Data.Eq ((==), class Eq)
-import Data.HeytingAlgebra ((&&))
-import Data.String.Common (null)
 import Data.Foldable as Data.Foldable
 import Data.Function (flip, ($))
 import Data.Functor as Data.Functor
+import Data.HeytingAlgebra ((&&))
 import Data.Maybe (Maybe(..))
 import Data.Ord ((<), (>), (>=), (<=), class Ord)
 import Data.Ring (class Ring, (-), negate)
 import Data.Semigroup ((<>))
 import Data.Semiring ((+), (*))
 import Data.Show (class Show, show)
+import Data.String.CodeUnits as String
+import Data.String.Common (null)
 import Data.String.Common as Data.String.Common
---import Data.String.CodeUnits (fromCharArray, toCharArray)
 import Data.Tuple (Tuple, Tuple(..))
 import Data.Unit (Unit)
 import Effect (Effect)
 import Effect.Console (log)
-import Data.Array as Array
-import Data.String.CodeUnits as String
-
-import FindingSuccessAndFailure
 import Validation as Validation
 
 -------------------------------
@@ -259,11 +259,11 @@ main = do
   -- log $ show $ makeUser' "pippo" ""
   -- log $ show $ makeUser'' "password123" "username"
 
-  log $ show $ Validation.makeUser "pippo" ""
-  log $ show $ Validation.makeUser "username" "password123"
-  log $ show $ Validation.makeUser "short pass no alpha" "1234567 "
-  log $ show $ Validation.makeUser "short pass no alpha" "1234567adfasdfs "
-  log $ show $ Validation.makeUser "short pass" "a234567 "
+  -- log $ show $ Validation.makeUser "pippo" ""
+  -- log $ show $ Validation.makeUser "username" "password123"
+  -- log $ show $ Validation.makeUser "short pass no alpha" "1234567 "
+  -- log $ show $ Validation.makeUser "short pass no alpha" "1234567adfasdfs "
+  log $ show $ Validation.makeUser "short" " -"
 
   -- log $ show (requireAlphaNum "ciao54321")
   -- log $ show (requireAlphaNum "ciao. ciao.")
