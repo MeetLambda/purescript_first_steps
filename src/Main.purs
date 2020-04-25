@@ -230,8 +230,8 @@ factors n = do
   pure $ Tuple a b
 -- ===================================================
 
-main :: Effect Unit
-main = do
+-- main :: Effect Unit
+-- main = do
   -- mainWithApplicativeDo
   -- mainWithBind
   -- mainWithApplySecond
@@ -263,7 +263,7 @@ main = do
   -- log $ show $ Validation.makeUser "username" "password123"
   -- log $ show $ Validation.makeUser "short pass no alpha" "1234567 "
   -- log $ show $ Validation.makeUser "short pass no alpha" "1234567adfasdfs "
-  log $ show $ Validation.makeUser "short" " -"
+  -- log $ show $ Validation.makeUser "short" " -"
 
   -- log $ show (requireAlphaNum "ciao54321")
   -- log $ show (requireAlphaNum "ciao. ciao.")
